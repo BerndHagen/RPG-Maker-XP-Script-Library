@@ -2,7 +2,7 @@
   <img src="img/img_v1.0.0-rpgxp.png" alt="RPG Maker XP Scripts" width="128" />
 </p>
 
-<h1 align="center">RPG Maker XP Enhanced Scripts</h1>
+<h1 align="center">RPG Maker XP - Script Library</h1>
 
 <p align="center">
   <b>A collection of enhanced and custom RPG Maker XP scripts.</b><br>
