@@ -46,19 +46,48 @@ Each script maintains full compatibility with the standard RPG Maker XP framewor
 ## **Table of Contents**
 
 1. [Getting Started](#getting-started)
-2. [Scripts](#scripts)
-   - [Player Jump System](#player-jump-system)
-   - [Player HUD System](#player-hud-system)
-   - [BGM Player Menu](#bgm-player-menu)
-   - [Typewriter Message System](#typewriter-message-system)
-   - [Enhanced Menu Windows](#enhanced-menu-windows)
-   - [Visual Timer System](#visual-timer-system)
-   - [Grid Save System](#grid-save-system)
-   - [Horizontal Title Menu](#horizontal-title-menu)
-   - [Transparent Menu System](#transparent-menu-system)
-3. [Script Integration](#script-integration)
-4. [License](#license)
-5. [Screenshots](#screenshots)
+   - [Requirements](#requirements)
+   - [Adding Scripts to Your Project](#adding-scripts-to-your-project)
+   - [Verifying Setup](#verifying-setup)
+   - [Common Issues](#common-issues)
+2. [Player Jump System](#player-jump-system)
+   - [Core Features](#core-features)
+   - [Key Implementation](#key-implementation)
+   - [Customization](#customization)
+3. [Player HUD System](#player-hud-system)
+   - [Core Features](#core-features-1)
+   - [Key Customization](#key-customization)
+4. [BGM Player Menu](#bgm-player-menu)
+   - [Core Features](#core-features-2)
+   - [Key Customization](#key-customization-1)
+   - [Title Screen Integration](#title-screen-integration)
+5. [Typewriter Message System](#typewriter-message-system)
+   - [Core Features](#core-features-3)
+   - [Key Implementation](#key-implementation-1)
+   - [Customization](#customization-1)
+6. [Enhanced Menu Windows](#enhanced-menu-windows)
+   - [Features](#features)
+   - [Icon Customization](#icon-customization)
+   - [Icon Positioning](#icon-positioning)
+7. [Visual Timer System](#visual-timer-system)
+   - [Core Features](#core-features-4)
+   - [Key Implementation](#key-implementation-2)
+   - [Customization](#customization-2)
+8. [Grid Save System](#grid-save-system)
+   - [Core Features](#core-features-5)
+   - [Key Implementation](#key-implementation-3)
+   - [Navigation Controls](#navigation-controls)
+9. [Horizontal Title Menu](#horizontal-title-menu)
+   - [Core Features](#core-features-6)
+   - [Key Implementation](#key-implementation-4)
+   - [Customization](#customization-3)
+10. [Transparent Menu System](#transparent-menu-system)
+    - [Core Features](#core-features-7)
+    - [Key Implementation](#key-implementation-5)
+    - [Enhanced Menu Layouts](#enhanced-menu-layouts)
+    - [Transparency Customization](#transparency-customization)
+11. [License](#license)
+12. [Screenshots](#screenshots)
 
 ## **Getting Started**
 
@@ -74,13 +103,54 @@ Each script maintains full compatibility with the standard RPG Maker XP framewor
 4. Replace the existing script content with the enhanced version
 5. Save your project (Ctrl+S) and test the new functionality
 
+### **Adding Scripts to Your Project**
+
+1. **Open Script Editor**
+   - Launch RPG Maker XP and open your project
+   - Press F11 to open the Script Editor
+
+2. **Locate Target Script**
+   - Find the script you want to enhance in the script list (left panel)
+   - Click to select it (e.g., "Game_Player" for jump system)
+
+3. **Replace Script Content**
+   - Select all existing content (Ctrl+A)
+   - Delete the selected content
+   - Copy and paste the enhanced script from this repository
+
+4. **Save Changes**
+   - Press Ctrl+S to save your changes
+   - Close the Script Editor
+   - Test your game to verify functionality
+
+**Important Notes:**
+Always backup your project before adding new scripts:
+- Create a complete copy of your project folder
+- Export existing scripts if you've made custom modifications
+- Test scripts on a backup project first
+
 ### **Verifying Setup**
 - Run your game in test mode (F12)
 - Test the new functionality (e.g., press A/Shift for jump system)
 - Verify existing features still work correctly
 - Check that no script errors appear in the console
 
-## **Scripts**
+### **Common Issues**
+
+**Script Not Working:**
+- Verify the script was pasted correctly and completely
+- Check that you're using the correct input (A/Shift for jump system)
+- Ensure no syntax errors were introduced during copying
+
+**Sound Effects Not Playing:**
+- Confirm sound files exist in your project's Audio/SE folder
+- Check the filename matches exactly in the script
+- Verify your project's audio settings
+
+**Conflicts with Other Scripts:**
+- Test with a fresh project to identify conflicts
+- Check for other custom scripts modifying the same classes
+- Some scripts may need to be placed in specific order
 
 ## Player Jump System
 
@@ -408,51 +478,6 @@ window.opacity = 0          # Completely transparent
 window.back_opacity = 200   # Content background transparency
 ```
 
-## **Script Integration**
-
-### **Adding Scripts to Your Project**
-
-1. **Open Script Editor**
-   - Launch RPG Maker XP and open your project
-   - Press F11 to open the Script Editor
-
-2. **Locate Target Script**
-   - Find the script you want to enhance in the script list (left panel)
-   - Click to select it (e.g., "Game_Player" for jump system)
-
-3. **Replace Script Content**
-   - Select all existing content (Ctrl+A)
-   - Delete the selected content
-   - Copy and paste the enhanced script from this repository
-
-4. **Save Changes**
-   - Press Ctrl+S to save your changes
-   - Close the Script Editor
-   - Test your game to verify functionality
-
-### **Important Notes**
-Always backup your project before adding new scripts:
-- Create a complete copy of your project folder
-- Export existing scripts if you've made custom modifications
-- Test scripts on a backup project first
-
-### **Common Issues**
-
-**Script Not Working:**
-- Verify the script was pasted correctly and completely
-- Check that you're using the correct input (A/Shift for jump system)
-- Ensure no syntax errors were introduced during copying
-
-**Sound Effects Not Playing:**
-- Confirm sound files exist in your project's Audio/SE folder
-- Check the filename matches exactly in the script
-- Verify your project's audio settings
-
-**Conflicts with Other Scripts:**
-- Test with a fresh project to identify conflicts
-- Check for other custom scripts modifying the same classes
-- Some scripts may need to be placed in specific order
-
 ## **License**
 
 This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
@@ -463,7 +488,7 @@ The following screenshots demonstrate the core functionality of each script, inc
 
 <table>
   <tr>
-    <th>Script - Jump System</th>
+    <th>Script - BGM Player</th>
     <th>Script - HUD System</th>
     <th>Script - Enhanced Menus</th>
   </tr>
@@ -476,7 +501,7 @@ The following screenshots demonstrate the core functionality of each script, inc
 
 <table>
   <tr>
-    <th>Script - Grid Save System</th>
+    <th>Script - Save System</th>
     <th>Script - Skill Information</th>
     <th>Script - Visual Timer</th>
   </tr>
