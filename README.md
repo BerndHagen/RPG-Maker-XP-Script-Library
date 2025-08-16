@@ -493,21 +493,20 @@ The following screenshots demonstrate the core functionality of each script, inc
     <th>Script - Enhanced Menus</th>
   </tr>
   <tr>
-    <td><a href="img/img_v1.0.0-rpgxp-player.png" target="_blank"><img src="img/img_v1.0.0-rpgxp-player.png" alt="Jump System" width="300"></a></td>
-    <td><a href="img/img_v1.0.0-rpgxp-hud.png" target="_blank"><img src="img/img_v1.0.0-rpgxp-hud.png" alt="HUD Display" width="300"></a></td>
-    <td><a href="img/img_v1.0.0-rpgxp-menu.png" target="_blank"><img src="img/img_v1.0.0-rpgxp-menu.png" alt="Enhanced Menu" width="300"></a></td>
+    <td><a href="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/img/img_v1.0.0-rpgxp-player.png" target="_blank" rel="noopener noreferrer"><img src="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/img/img_v1.0.0-rpgxp-player.png" alt="BGM Player" width="300"></a></td>
+    <td><a href="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/img/img_v1.0.0-rpgxp-hud.png" target="_blank" rel="noopener noreferrer"><img src="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/img/img_v1.0.0-rpgxp-hud.png" alt="HUD Display" width="300"></a></td>
+    <td><a href="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/img/img_v1.0.0-rpgxp-menu.png" target="_blank" rel="noopener noreferrer"><img src="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/img/img_v1.0.0-rpgxp-menu.png" alt="Enhanced Menu" width="300"></a></td>
   </tr>
 </table>
-
 <table>
   <tr>
-    <th>Script - Save System</th>
+    <th>Script - Grid Save System</th>
     <th>Script - Skill Information</th>
     <th>Script - Visual Timer</th>
   </tr>
   <tr>
-    <td><a href="img/img_v1.0.0-rpgxp-save.png" target="_blank"><img src="img/img_v1.0.0-rpgxp-save.png" alt="Grid Save System" width="300"></a></td>
-    <td><a href="img/img_v1.0.0-rpgxp-skills.png" target="_blank"><img src="img/img_v1.0.0-rpgxp-skills.png" alt="Skill Information" width="300"></a></td>
-    <td><a href="img/img_v1.0.0-rpgxp-timer.png" target="_blank"><img src="img/img_v1.0.0-rpgxp-timer.png" alt="Visual Timer" width="300"></a></td>
+    <td><a href="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/img/img_v1.0.0-rpgxp-save.png" target="_blank" rel="noopener noreferrer"><img src="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/img/img_v1.0.0-rpgxp-save.png" alt="Grid Save System" width="300"></a></td>
+    <td><a href="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/img/img_v1.0.0-rpgxp-skills.png" target="_blank" rel="noopener noreferrer"><img src="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/img/img_v1.0.0-rpgxp-skills.png" alt="Skill Information" width="300"></a></td>
+    <td><a href="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/img/img_v1.0.0-rpgxp-timer.png" target="_blank" rel="noopener noreferrer"><img src="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/img/img_v1.0.0-rpgxp-timer.png" alt="Visual Timer" width="300"></a></td>
   </tr>
 </table>
