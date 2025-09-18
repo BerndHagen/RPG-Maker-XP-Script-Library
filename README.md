@@ -156,6 +156,8 @@ Always backup your project before adding new scripts:
 
 Enhanced player movement system that adds jump functionality to the standard movement controls. The player can now leap over obstacles and traverse terrain more dynamically using the A button (Shift key by default).
 
+**Required File:** `Game/Game_Player.rb`
+
 ### Core Features
 - **Jump Mechanics:** Player jumps 2 tiles in current facing direction
 - **Collision Detection:** Prevents jumping into walls or impassable terrain
@@ -200,6 +202,8 @@ Audio.se_play("Audio/SE/YourJumpSound", 100, 120)
 
 Real-time overlay HUD showing party member HP/SP bars during map exploration. Automatically manages visibility across different scenes and supports up to 4 party members.
 
+**Required File:** `Custom/Window_PlayerHUD.rb`
+
 ### Core Features
 - **Live HP/SP Display:** Real-time health monitoring during gameplay
 - **Gradient Health Bars:** Visual bars with smooth color effects
@@ -224,6 +228,8 @@ Color.new(60, 60, 220)     # SP (Blue)
 ## BGM Player Menu
 
 Interactive music browser with real-time volume/pitch controls and multi-format support. Integrates with the title screen menu for easy access.
+
+**Required File:** `Custom/Window_BGMList.rb`
 
 ### Core Features
 - **Music Library Browser:** Navigate through available BGM files
@@ -256,6 +262,8 @@ when 2  # BGM Player option
 ## Typewriter Message System
 
 Enhanced message window that displays text character-by-character with sound effects. Players can skip the animation by pressing the confirm button to instantly display the complete message.
+
+**Required File:** `Window/Window_Message.rb`
 
 ### Core Features
 - **Character-by-Character Display:** Text appears one letter at a time
@@ -292,6 +300,11 @@ end
 
 Improved versions of the standard Gold, Steps, and PlayTime windows with icon integration. These drop-in replacements add visual icons while maintaining all original functionality.
 
+**Required Files:** 
+- `Window/Window_Gold.rb`
+- `Window/Window_Steps.rb`
+- `Window/Window_PlayTime.rb`
+
 ### Features
 - **Window_Gold:** Treasure chest icon (032-Item01)
 - **Window_Steps:** Boot icon (020-Accessory05) 
@@ -320,6 +333,8 @@ self.contents.blt(4, 36, icon, Rect.new(0, 0, 24, 24))
 ## Visual Timer System
 
 Enhanced timer display with visual warning effects, color changes, and sound alerts. Features screen shake and opacity pulsing when time is running low.
+
+**Required File:** `Sprite/Sprite_Timer.rb`
 
 ### Core Features
 - **Visual Warning System:** Color changes and pulsing effects as time decreases
@@ -355,6 +370,8 @@ if $game_system.timer / Graphics.frame_rate <= 5  # Screen shake
 
 Redesigned save/load interface with 2x2 grid layout, file preview, and confirmation system. Features transparent windows over title background.
 
+**Required File:** `Scene/Scene_Save.rb`
+
 ### Core Features
 - **2x2 Grid Layout:** Four save slots arranged in organized grid
 - **File Preview:** Selected save file displayed in center with full details
@@ -383,6 +400,8 @@ end
 ## Horizontal Title Menu
 
 Redesigned title screen with side-by-side menu options displayed in individual windows. Features horizontal navigation and visual highlighting.
+
+**Required File:** `Scene/Scene_Title.rb`
 
 ### Core Features
 - **Individual Windows:** Each menu option in separate styled window
@@ -422,6 +441,13 @@ y = 380               # Vertical position
 ## Transparent Menu System
 
 Complete overhaul of menu scenes to display the game map in the background with transparent window effects. Provides better visual continuity and organized information display across all menu screens.
+
+**Required Files:**
+- `Scene/Scene_Menu.rb`
+- `Scene/Scene_Skill.rb`
+- `Scene/Scene_Status.rb`
+- `Scene/Scene_Item.rb`
+- `Scene/Scene_Equip.rb`
 
 ### Core Features
 - **Background Visibility:** Game map remains visible behind all menu screens  
