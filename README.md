@@ -521,7 +521,7 @@ Enhanced enemy encyclopedia that tracks defeated monsters and displays detailed 
 - **Detailed Stats:** Shows HP, SP, ATK, DEF, MDEF, AGI, EVA, EXP
 - **Visual Display:** Enemy battler images with silhouette for undiscovered
 - **Reward Information:** Gold and item drops for each enemy
-- **Menu Integration:** Accessible from main menu (R button)
+- **Menu Integration:** Accessible from player menu (R button)
 
 ### Key Implementation
 ```ruby
