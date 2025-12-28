@@ -184,7 +184,7 @@ class Scene_Menu
       end
       case @command_window.index
       when 0
-        $game_system.se_play($data_system.decision_se)n
+        $game_system.se_play($data_system.decision_se)
         $scene = Scene_Item.new
       when 1
         $game_system.se_play($data_system.decision_se)

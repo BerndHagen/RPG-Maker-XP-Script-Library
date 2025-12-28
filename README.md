@@ -28,6 +28,7 @@ Each script maintains full compatibility with the standard RPG Maker XP framewor
 - **Grid Save System:** 2x2 save file layout with confirmation dialogs and preview
 - **Horizontal Title Menu:** Side-by-side menu options with individual window styling
 - **Transparent Menu System:** Menu scenes with background visibility and improved window layouts
+- **Bestiary System:** Enemy encyclopedia with detailed stats, rewards, and visual representations
 
 ### **Key Features**
 
@@ -86,8 +87,12 @@ Each script maintains full compatibility with the standard RPG Maker XP framewor
     - [Key Implementation](#key-implementation-5)
     - [Enhanced Menu Layouts](#enhanced-menu-layouts)
     - [Transparency Customization](#transparency-customization)
-11. [License](#license)
-12. [Screenshots](#screenshots)
+11. [Bestiary System](#bestiary-system)
+    - [Core Features](#core-features-8)
+    - [Key Implementation](#key-implementation-6)
+    - [Customization](#customization-4)
+12. [License](#license)
+13. [Screenshots](#screenshots)
 
 ## **Getting Started**
 
@@ -504,6 +509,49 @@ window.opacity = 0          # Completely transparent
 window.back_opacity = 200   # Content background transparency
 ```
 
+## Bestiary System
+
+Enhanced enemy encyclopedia that tracks defeated monsters and displays detailed information. Automatically registers enemies after battle and provides comprehensive stats, rewards, and visual representations.
+
+**Required File:** `Scene/Scene_Bestiary.rb`
+
+### Core Features
+- **Enemy Tracking:** Automatically registers defeated enemies in battles
+- **Comprehensive Database:** Displays all enemies with discovery status
+- **Detailed Stats:** Shows HP, SP, ATK, DEF, MDEF, AGI, EVA, EXP
+- **Visual Display:** Enemy battler images with silhouette for undiscovered
+- **Reward Information:** Gold and item drops for each enemy
+- **Menu Integration:** Accessible from main menu (R button)
+
+### Key Implementation
+```ruby
+# Register enemy after battle
+def start_phase5
+  for enemy in $game_troop.enemies
+    unless enemy.hidden
+      $game_system.register_enemy(enemy.id)
+    end
+  end
+end
+
+# Check discovery status
+def enemy_discovered?(enemy_id)
+  return @bestiary[enemy_id] == true
+end
+```
+
+### Customization
+**Change menu access key:**
+```ruby
+if Input.trigger?(Input::L)  # Use L button instead of R
+```
+
+**Adjust window transparency:**
+```ruby
+window.opacity = 200        # Window background
+window.back_opacity = 160   # Content background
+```
+
 ## **License**
 
 This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
@@ -516,23 +564,33 @@ The following screenshots demonstrate the core functionality of each script, inc
   <tr>
     <th>Script - BGM Player</th>
     <th>Script - HUD System</th>
+  </tr>
+  <tr>
+    <td><a href="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/img/img_v1.0.0-rpgxp-player.png" target="_blank" rel="noopener noreferrer"><img src="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/img/img_v1.0.0-rpgxp-player.png" alt="BGM Player" width="450"></a></td>
+    <td><a href="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/img/img_v1.0.0-rpgxp-hud.png" target="_blank" rel="noopener noreferrer"><img src="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/img/img_v1.0.0-rpgxp-hud.png" alt="HUD Display" width="450"></a></td>
+  </tr>
+  <tr>
     <th>Script - Enhanced Menus</th>
-  </tr>
-  <tr>
-    <td><a href="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/img/img_v1.0.0-rpgxp-player.png" target="_blank" rel="noopener noreferrer"><img src="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/img/img_v1.0.0-rpgxp-player.png" alt="BGM Player" width="300"></a></td>
-    <td><a href="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/img/img_v1.0.0-rpgxp-hud.png" target="_blank" rel="noopener noreferrer"><img src="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/img/img_v1.0.0-rpgxp-hud.png" alt="HUD Display" width="300"></a></td>
-    <td><a href="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/img/img_v1.0.0-rpgxp-menu.png" target="_blank" rel="noopener noreferrer"><img src="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/img/img_v1.0.0-rpgxp-menu.png" alt="Enhanced Menu" width="300"></a></td>
-  </tr>
-</table>
-<table>
-  <tr>
     <th>Script - Grid Save System</th>
+  </tr>
+  <tr>
+    <td><a href="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/img/img_v1.0.0-rpgxp-menu.png" target="_blank" rel="noopener noreferrer"><img src="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/img/img_v1.0.0-rpgxp-menu.png" alt="Enhanced Menu" width="450"></a></td>
+    <td><a href="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/img/img_v1.0.0-rpgxp-save.png" target="_blank" rel="noopener noreferrer"><img src="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/img/img_v1.0.0-rpgxp-save.png" alt="Grid Save System" width="450"></a></td>
+  </tr>
+  <tr>
     <th>Script - Skill Information</th>
     <th>Script - Visual Timer</th>
   </tr>
   <tr>
-    <td><a href="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/img/img_v1.0.0-rpgxp-save.png" target="_blank" rel="noopener noreferrer"><img src="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/img/img_v1.0.0-rpgxp-save.png" alt="Grid Save System" width="300"></a></td>
-    <td><a href="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/img/img_v1.0.0-rpgxp-skills.png" target="_blank" rel="noopener noreferrer"><img src="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/img/img_v1.0.0-rpgxp-skills.png" alt="Skill Information" width="300"></a></td>
-    <td><a href="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/img/img_v1.0.0-rpgxp-timer.png" target="_blank" rel="noopener noreferrer"><img src="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/img/img_v1.0.0-rpgxp-timer.png" alt="Visual Timer" width="300"></a></td>
+    <td><a href="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/img/img_v1.0.0-rpgxp-skills.png" target="_blank" rel="noopener noreferrer"><img src="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/img/img_v1.0.0-rpgxp-skills.png" alt="Skill Information" width="450"></a></td>
+    <td><a href="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/img/img_v1.0.0-rpgxp-timer.png" target="_blank" rel="noopener noreferrer"><img src="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/img/img_v1.0.0-rpgxp-timer.png" alt="Visual Timer" width="450"></a></td>
+  </tr>
+  <tr>
+    <th>Script - Player Jump System</th>
+    <th>Script - Bestiary System</th>
+  </tr>
+  <tr>
+    <td><a href="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/img/img_v1.0.0-rpgxp-jump.png" target="_blank" rel="noopener noreferrer"><img src="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/img/img_v1.0.0-rpgxp-jump.png" alt="Player Jump System" width="450"></a></td>
+    <td><a href="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/img/img_v1.0.1-rpgxp-bestiary.png" target="_blank" rel="noopener noreferrer"><img src="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/img/img_v1.0.1-rpgxp-bestiary.png" alt="Bestiary System" width="450"></a></td>
   </tr>
 </table>
