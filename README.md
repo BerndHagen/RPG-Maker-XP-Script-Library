@@ -625,11 +625,11 @@ $game_party.gold_popup(amount)
 
 **Examples:**
 ```ruby
-$game_party.item_popup(1, 2)   # Shows "[Icon] Potion       x 2"
-$game_party.item_popup(5, 1)   # Shows "[Icon] Antidote     x 1"
-$game_party.weapon_popup(1, 1) # Shows "[Icon] Bronze Sword x 1"
-$game_party.armor_popup(3, 1)  # Shows "[Icon] Iron Shield  x 1"
-$game_party.gold_popup(500)    # Shows "[Icon] Gold         x 500"
+$game_party.item_popup(1, 2)   # Shows "[Icon] Potion           x 2"
+$game_party.item_popup(5, 4)   # Shows "[Icon] High Perfume     x 4"
+$game_party.weapon_popup(1, 1) # Shows "[Icon] Bronze Sword     x 1"
+$game_party.armor_popup(3, 1)  # Shows "[Icon] Steel Shield     x 1"
+$game_party.gold_popup(7)      # Shows "[Icon] Gold             x 7"
 ```
 
 ### Customization
