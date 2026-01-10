@@ -593,9 +593,9 @@ window.back_opacity = 160   # Content background
 
 ## **Item Popup System**
 
-> 📍 **File:** `11-Item-Popup-System/Window_ItemPopup.rb`
-
 Standard RPG Maker XP window-based popup for chest/event rewards. Windows slide in from the right edge of the screen showing icon, item name, and quantity. Multiple popups stack vertically.
+
+**Required File:** `11-Item-Popup-System/Window_ItemPopup.rb`
 
 ### Core Features
 - **Standard RPG Maker XP Windows:** Uses default window skin for consistent visual style
@@ -625,24 +625,24 @@ $game_party.gold_popup(amount)
 
 **Examples:**
 ```ruby
-$game_party.item_popup(1, 2)   # Shows "[Icon] Potion           x 2"
-$game_party.item_popup(5, 4)   # Shows "[Icon] High Perfume     x 4"
-$game_party.weapon_popup(1, 1) # Shows "[Icon] Bronze Sword     x 1"
-$game_party.armor_popup(3, 1)  # Shows "[Icon] Steel Shield     x 1"
-$game_party.gold_popup(7)      # Shows "[Icon] Gold             x 7"
+$game_party.item_popup(1, 2)     # Shows "[Icon] Potion           x 2"
+$game_party.item_popup(5, 4)     # Shows "[Icon] High Perfume     x 4"
+$game_party.weapon_popup(1, 1)   # Shows "[Icon] Bronze Sword     x 1"
+$game_party.armor_popup(3, 1)    # Shows "[Icon] Steel Shield     x 1"
+$game_party.gold_popup(7)        # Shows "[Icon] Gold             x 7"
 ```
 
 ### Customization
 **Adjust display duration and animation:**
 ```ruby
-WINDOW_WIDTH = 260        # Width of popup window
-WINDOW_HEIGHT = 52        # Height of popup window
-DISPLAY_TIME = 120        # Frames visible (2 seconds at 60fps)
-SLIDE_IN_TIME = 12        # Frames for slide-in animation
-SLIDE_OUT_TIME = 12       # Frames for slide-out animation
-OVERHANG = 32             # How much window hangs off right edge
-SOUND_EFFECT = "002-System02"  # Sound when appearing
-GOLD_ICON = "032-Item01"  # Icon used for gold popups
+WINDOW_WIDTH = 260               # Width of popup window
+WINDOW_HEIGHT = 52               # Height of popup window
+DISPLAY_TIME = 120               # Frames visible (2 seconds at 60fps)
+SLIDE_IN_TIME = 12               # Frames for slide-in animation
+SLIDE_OUT_TIME = 12              # Frames for slide-out animation
+OVERHANG = 32                    # How much window hangs off right edge
+SOUND_EFFECT = "002-System02"    # Sound when appearing
+GOLD_ICON = "032-Item01"         # Icon used for gold popups
 ```
 
 ## **License**
