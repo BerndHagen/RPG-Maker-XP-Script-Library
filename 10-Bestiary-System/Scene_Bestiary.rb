@@ -178,9 +178,6 @@ class Window_BestiaryHelp < Window_Base
     
     if $game_system.enemy_discovered?(@enemy.id)
       enemy_data = $data_enemies[@enemy.id]
-      
-      # Get all weaknesses with their rank (lower rank = stronger weakness)
-      # A=1 (200% damage), B=2 (150% damage) are weaknesses
       weakness_data = []
       for element_id in 1..8
         rank = enemy_data.element_ranks[element_id]
@@ -188,14 +185,8 @@ class Window_BestiaryHelp < Window_Base
           weakness_data.push({:id => element_id, :rank => rank})
         end
       end
-      
-      # Sort by rank (strongest weakness first = lowest rank number)
       weakness_data.sort! { |a, b| a[:rank] <=> b[:rank] }
-      
-      # Take only top 2 weaknesses
       weakness_data = weakness_data[0, 2] if weakness_data.size > 2
-      
-      # Draw text with colored elements
       x = 0
       self.contents.font.color = normal_color
       
@@ -227,8 +218,6 @@ class Window_BestiaryHelp < Window_Base
         self.contents.draw_text(x, 0, self.contents.text_size(text).width, 32, text)
         x += self.contents.text_size(text).width
       end
-      
-      # Add rewards
       self.contents.font.color = normal_color
       rewards = "Rewards: " + @enemy.gold.to_s + " Gold, " + @enemy.exp.to_s + " EXP"
       self.contents.draw_text(x, 0, 300, 32, rewards)

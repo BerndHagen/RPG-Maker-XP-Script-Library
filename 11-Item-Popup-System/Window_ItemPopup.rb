@@ -41,12 +41,11 @@ class Window_ItemPopup < Window_Base
   #--------------------------------------------------------------------------
   def initialize(stack_index = 0)
     @stack_index = stack_index
-    # Position: starts off-screen to the right
     super(640, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
     self.contents = Bitmap.new(width - 32, height - 32)
     self.z = 9999
     @timer = 0
-    @phase = :hidden  # :hidden, :sliding_in, :displayed, :sliding_out
+    @phase = :hidden
     update_target_position
   end
   
@@ -54,9 +53,7 @@ class Window_ItemPopup < Window_Base
   # * Update Target Position Based on Stack Index
   #--------------------------------------------------------------------------
   def update_target_position
-    # Target X: window sticks out from right edge (partially off-screen)
     @target_x = 640 - WINDOW_WIDTH + OVERHANG
-    # Target Y: stack from bottom up
     @target_y = 480 - WINDOW_HEIGHT - MARGIN_BOTTOM - (@stack_index * (WINDOW_HEIGHT + STACK_SPACING))
   end
   
@@ -66,7 +63,6 @@ class Window_ItemPopup < Window_Base
   def stack_index=(value)
     @stack_index = value
     update_target_position
-    # Smoothly move to new position if visible
     if @phase == :displayed || @phase == :sliding_in
       self.y = @target_y
     end
@@ -83,16 +79,11 @@ class Window_ItemPopup < Window_Base
   # * Display Popup
   #--------------------------------------------------------------------------
   def display_popup(name, icon_name, amount, play_sound = true)
-    # Play sound effect
     if play_sound
       se = RPG::AudioFile.new(SOUND_EFFECT, 80, 100)
       $game_system.se_play(se)
     end
-    
-    # Clear contents
     self.contents.clear
-    
-    # Draw icon
     icon_bitmap = nil
     if icon_name != "" && icon_name != "gold"
       begin
@@ -107,44 +98,29 @@ class Window_ItemPopup < Window_Base
         icon_bitmap = nil
       end
     end
-    
-    # Calculate content area height (window height - 32 for borders)
     content_height = WINDOW_HEIGHT - 32
-    
-    # Icon position - centered vertically
     icon_x = 0
-    icon_y = (content_height - 24) / 2  # 24 = icon height
+    icon_y = (content_height - 24) / 2
     
     if icon_bitmap
       self.contents.blt(icon_x, icon_y, icon_bitmap, Rect.new(0, 0, 24, 24))
     end
-    
-    # Text starts after icon with more spacing - centered vertically
-    text_x = icon_x + 32  # Increased spacing from icon
-    text_y = (content_height - 16) / 2 - 1  # Adjusted for smaller font
-    
-    # Draw item name (normal color, smaller font, bold)
+    text_x = icon_x + 32
+    text_y = (content_height - 16) / 2 - 1
     self.contents.font.size = 18
     self.contents.font.bold = true
     self.contents.font.color = normal_color
     self.contents.draw_text(text_x, text_y, 110, 18, name)
-    
-    # Draw amount (system color / yellow) on the right side
     if amount > 0
       self.contents.font.color = system_color
-      # Draw "x" and value
       amount_text = "x #{amount}"
       self.contents.draw_text(WINDOW_WIDTH - 32 - OVERHANG - 60, text_y, 60, 18, amount_text, 2)
     end
-    
-    # Reset bold
     self.contents.font.bold = false
-    
-    # Start slide-in animation
     @timer = 0
     @phase = :sliding_in
     update_target_position
-    self.x = 640  # Start completely off-screen
+    self.x = 640
     self.y = @target_y
     self.visible = true
   end
@@ -157,10 +133,8 @@ class Window_ItemPopup < Window_Base
     
     case @phase
     when :sliding_in
-      # Slide in from right
       @timer += 1
       progress = [@timer.to_f / SLIDE_IN_TIME.to_f, 1.0].min
-      # Ease out (decelerate)
       ease_progress = 1.0 - (1.0 - progress) ** 2
       self.x = 640 - ((640 - @target_x) * ease_progress).to_i
       
@@ -171,7 +145,6 @@ class Window_ItemPopup < Window_Base
       end
       
     when :displayed
-      # Stay visible and follow target y position
       self.y = @target_y
       @timer += 1
       if @timer >= DISPLAY_TIME
@@ -180,10 +153,8 @@ class Window_ItemPopup < Window_Base
       end
       
     when :sliding_out
-      # Slide out to right
       @timer += 1
       progress = [@timer.to_f / SLIDE_OUT_TIME.to_f, 1.0].min
-      # Ease in (accelerate)
       ease_progress = progress ** 2
       self.x = @target_x + ((640 - @target_x) * ease_progress).to_i
       
@@ -257,14 +228,11 @@ class ItemPopupManager
   end
   
   def add_popup(name, icon_name, amount)
-    # Push all active popups up
     @popups.each do |popup|
       if popup.active?
         popup.stack_index += 1
       end
     end
-    
-    # Find an available popup slot
     available_popup = @popups.find { |p| p.available? }
     
     if available_popup
@@ -275,16 +243,11 @@ class ItemPopupManager
   
   def update
     @popups.each { |popup| popup.update }
-    
-    # Reset stack indices when popups disappear
     reindex_popups
   end
   
   def reindex_popups
-    # Get active popups sorted by their current stack index
     active = @popups.select { |p| p.active? }.sort_by { |p| p.stack_index }
-    
-    # Reassign indices starting from 0
     active.each_with_index do |popup, index|
       popup.stack_index = index
     end
@@ -307,11 +270,8 @@ class Scene_Map
   #--------------------------------------------------------------------------
   alias item_popup_main main unless method_defined?(:item_popup_main)
   def main
-    # Create popup manager
     $item_popup_manager = ItemPopupManager.new
-    # Call original
     item_popup_main
-    # Dispose popup manager
     $item_popup_manager.dispose
     $item_popup_manager = nil
   end
@@ -321,9 +281,7 @@ class Scene_Map
   #--------------------------------------------------------------------------
   alias item_popup_update update unless method_defined?(:item_popup_update)
   def update
-    # Update popup manager
     $item_popup_manager.update if $item_popup_manager
-    # Call original
     item_popup_update
   end
 end

@@ -30,17 +30,15 @@ class Window_Message < Window_Selectable
     @typewriter_all_text = ""
     @typewriter_index = 0
     @typewriter_wait = 0
-    # Message history
     @message_history = []
-    @history_index = -1  # -1 = current message, 0+ = history
+    @history_index = -1
     @viewing_history = false
-    @is_replay = false   # True if showing already-seen message
+    @is_replay = false
   end
   #--------------------------------------------------------------------------
   # * Show History Message (instant display, gray text)
   #--------------------------------------------------------------------------
   def show_history_message(message_text, going_back = true)
-    # Play navigation sound
     se = RPG::AudioFile.new(HISTORY_SOUND, 80, 100)
     $game_system.se_play(se)
     @is_replay = true
@@ -70,7 +68,6 @@ class Window_Message < Window_Selectable
     self.index = -1
     self.contents.clear
     @contents_showing = false
-    # Save message to history (only pure text messages, no choices)
     if @typewriter_all_text != "" and $game_temp.choice_max == 0 and not @viewing_history
       @message_history.push(@typewriter_all_text.clone)
       if @message_history.size > HISTORY_MAX
@@ -106,7 +103,6 @@ class Window_Message < Window_Selectable
   #--------------------------------------------------------------------------
   def refresh
     self.contents.clear
-    # Use gray color for history/replay messages, normal color otherwise
     if @is_replay
       self.contents.font.color = disabled_color
     else
@@ -242,16 +238,13 @@ class Window_Message < Window_Selectable
       return
     end
     if @contents_showing
-      # History navigation with L button (go back)
       if Input.trigger?(Input::L) and $game_temp.choice_max == 0
         if @viewing_history
-          # Already in history, go further back
           if @history_index < @message_history.size - 1
             @history_index += 1
             show_history_message(@message_history[@message_history.size - 1 - @history_index], true)
           end
         else
-          # Enter history mode
           if @message_history.size > 0
             @viewing_history = true
             @history_index = 0
@@ -261,16 +254,12 @@ class Window_Message < Window_Selectable
         end
         return
       end
-      
-      # History navigation with R button (go forward)
       if Input.trigger?(Input::R) and @viewing_history
         if @history_index > 0
-          # Go forward in history
           @history_index -= 1
           @is_replay = true
           show_history_message(@message_history[@message_history.size - 1 - @history_index], false)
         else
-          # Return to current message
           @viewing_history = false
           @history_index = -1
           @is_replay = false
@@ -313,7 +302,6 @@ class Window_Message < Window_Selectable
       end
 
       if Input.trigger?(Input::C)
-        # If viewing history, return to current message instead of advancing
         if @viewing_history
           @viewing_history = false
           @history_index = -1
