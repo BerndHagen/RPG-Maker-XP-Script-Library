@@ -132,9 +132,9 @@ jobs:
           count_removed=0
           for key in "${folder_order[@]}"; do
             case "${folder_status[$key]}" in
-              added)    ((count_added++)) ;;
-              modified) ((count_modified++)) ;;
-              removed)  ((count_removed++)) ;;
+              added)    count_added=$((count_added + 1)) ;;
+              modified) count_modified=$((count_modified + 1)) ;;
+              removed)  count_removed=$((count_removed + 1)) ;;
             esac
           done
 
