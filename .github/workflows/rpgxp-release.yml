@@ -25,6 +25,29 @@ jobs:
 
           IGNORED_PATHS="README.md|LICENSE|images/|\.github/|\.gitattributes|\.gitignore"
 
+          # ── Script-Beschreibungen für Release Notes
+          declare -A SCRIPT_DESC
+          SCRIPT_DESC["Player Jump System"]="Player Jump System with cooldown mechanics and collision detection for enhanced movement"
+          SCRIPT_DESC["Player HUD System"]="Real-Time HUD Display showing party member HP/SP bars during map exploration"
+          SCRIPT_DESC["BGM Player Menu"]="BGM Player Menu with interactive music browser and volume/pitch controls"
+          SCRIPT_DESC["Typewriter Message System"]="Typewriter Message System for character-by-character text display with sound effects"
+          SCRIPT_DESC["Enhanced Menu Windows"]="Enhanced Menu Windows with icon integration for Gold, Steps, and PlayTime displays"
+          SCRIPT_DESC["Visual Timer System"]="Visual Timer System with warning effects, color changes, and sound alerts"
+          SCRIPT_DESC["Grid Save System"]="Grid Save System featuring 2x2 save file layout with confirmation dialogs"
+          SCRIPT_DESC["Horizontal Title Menu"]="Horizontal Title Menu with side-by-side menu options and individual window styling"
+          SCRIPT_DESC["Transparent Menu System"]="Transparent Menu System with background visibility and improved window layouts"
+          SCRIPT_DESC["Bestiary System"]="Bestiary System with enemy tracking, detailed stats, rewards, and visual representations"
+          SCRIPT_DESC["Item Popup System"]="Item Popup System with slide-in windows for chest/event rewards, stacking support, and automatic item management"
+
+          get_desc() {
+            local key="$1"
+            if [ -n "${SCRIPT_DESC[$key]+x}" ]; then
+              echo "${SCRIPT_DESC[$key]}"
+            else
+              echo "$key"
+            fi
+          }
+
           # ── Letzten Release-Tag ermitteln
           LATEST_TAG=$(git tag -l 'v*-scripts' --sort=-v:refname | head -n1 || true)
 
@@ -81,28 +104,41 @@ jobs:
             exit 0
           fi
 
-          total_files=$(echo "$DIFF" | grep -c . || echo "0")
-
-          # ── Kategorien vorbereiten
-          scripts_added=()
-          scripts_removed=()
-          scripts_modified=()
+          # ── Kategorien vorbereiten (dedupliziert nach Ordner)
+          declare -A folder_status
+          declare -a folder_order=()
 
           while IFS=$'\t' read -r status filepath; do
             [ -z "$status" ] && continue
             folder=$(echo "$filepath" | cut -d'/' -f1)
             readable=$(echo "$folder" | sed 's/^[0-9]*-//' | sed 's/-/ /g')
 
-            case "$status" in
-              A*) scripts_added+=("$readable") ;;
-              D*) scripts_removed+=("$readable") ;;
-              *)  scripts_modified+=("$readable") ;;
-            esac
+            if [ -z "${folder_status[$readable]+x}" ]; then
+              folder_order+=("$readable")
+              case "$status" in
+                A*) folder_status[$readable]="added" ;;
+                D*) folder_status[$readable]="removed" ;;
+                *)  folder_status[$readable]="modified" ;;
+              esac
+            else
+              if [[ "$status" == A* && "${folder_status[$readable]}" != "added" ]]; then
+                folder_status[$readable]="added"
+              fi
+            fi
           done <<< "$DIFF"
 
-          count_added=${#scripts_added[@]}
-          count_removed=${#scripts_removed[@]}
-          count_modified=${#scripts_modified[@]}
+          count_added=0
+          count_modified=0
+          count_removed=0
+          for key in "${folder_order[@]}"; do
+            case "${folder_status[$key]}" in
+              added)    ((count_added++)) ;;
+              modified) ((count_modified++)) ;;
+              removed)  ((count_removed++)) ;;
+            esac
+          done
+
+          total_systems=${#folder_order[@]}
 
           # ── Release Notes zusammenbauen
           BODY=""
@@ -111,10 +147,11 @@ jobs:
           BODY+="**Release: $RELEASE_DATE at $RELEASE_TIME**"$'\n\n'
 
           if [ "$IS_FIRST_RELEASE" = true ]; then
-            BODY+="This release contains $total_files RPG Maker XP scripts designed to improve gameplay mechanics and visual presentation. Each script is a drop-in replacement that maintains full compatibility with the standard RPG Maker XP framework while adding new functionality."$'\n\n'
+            BODY+="This release introduces ${total_systems} RPG Maker XP scripts designed to improve gameplay mechanics and visual presentation. Each script is a drop-in replacement that maintains full compatibility with the standard RPG Maker XP framework while adding new functionality."$'\n\n'
 
-            for s in "${scripts_added[@]}"; do
-              BODY+="• ⠀Added ${s}"$'\n'
+            for s in "${folder_order[@]}"; do
+              desc=$(get_desc "$s")
+              BODY+="• ⠀Added ${desc}"$'\n'
             done
           else
             parts=()
@@ -124,23 +161,14 @@ jobs:
             summary=$(IFS=", "; echo "${parts[*]}")
             BODY+="This release includes ${summary} script(s)."$'\n\n'
 
-            if [ $count_added -gt 0 ]; then
-              for s in "${scripts_added[@]}"; do
-                BODY+="• ⠀Added ${s}"$'\n'
-              done
-            fi
-
-            if [ $count_modified -gt 0 ]; then
-              for s in "${scripts_modified[@]}"; do
-                BODY+="• ⠀Enhanced ${s}"$'\n'
-              done
-            fi
-
-            if [ $count_removed -gt 0 ]; then
-              for s in "${scripts_removed[@]}"; do
-                BODY+="• ⠀Removed ~~${s}~~"$'\n'
-              done
-            fi
+            for s in "${folder_order[@]}"; do
+              desc=$(get_desc "$s")
+              case "${folder_status[$s]}" in
+                added)    BODY+="• ⠀Added ${desc}"$'\n' ;;
+                modified) BODY+="• ⠀Enhanced ${desc}"$'\n' ;;
+                removed)  BODY+="• ⠀Removed ~~${desc}~~"$'\n' ;;
+              esac
+            done
           fi
 
           BODY+=$'\n'"**Note:** If you encounter any bugs or issues, please don't hesitate to open an issue. For any questions or to start a discussion, feel free to initiate a discussion on the GitHub repository."
