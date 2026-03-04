@@ -1,0 +1,195 @@
+name: RPG Maker XP Release
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '**/*.rb'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Build Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+
+          IGNORED_PATHS="README.md|LICENSE|img/|\.github/|\.gitattributes|\.gitignore"
+
+          # ── Letzten Release-Tag ermitteln
+          LATEST_TAG=$(git tag -l 'v*-rpgxp-scripts' --sort=-v:refname | head -n1 || true)
+
+          if [ -z "$LATEST_TAG" ]; then
+            IS_FIRST_RELEASE=true
+            NEW_VERSION="v1.0.0"
+            DIFF=$(find . -name "*.rb" -not -path "./.git/*" | sed 's|^\./||' | sed 's/^/A\t/')
+          else
+            IS_FIRST_RELEASE=false
+            LAST_SHA=$(git rev-list -n1 "$LATEST_TAG" 2>/dev/null || true)
+
+            if [ -z "$LAST_SHA" ] || ! git cat-file -e "$LAST_SHA" 2>/dev/null; then
+              IS_FIRST_RELEASE=true
+              NEW_VERSION="v1.0.0"
+              DIFF=$(find . -name "*.rb" -not -path "./.git/*" | sed 's|^\./||' | sed 's/^/A\t/')
+            else
+              DIFF=$(git diff --name-status "$LAST_SHA" HEAD -- '*.rb' | grep -vP "\t($IGNORED_PATHS)" || echo "")
+            fi
+
+            if [ "$IS_FIRST_RELEASE" = false ]; then
+              # Version aus dem letzten Tag parsen
+              CURRENT=$(echo "$LATEST_TAG" | sed 's/^v//' | sed 's/-rpgxp-scripts$//')
+              MAJOR=$(echo "$CURRENT" | cut -d. -f1)
+              MINOR=$(echo "$CURRENT" | cut -d. -f2)
+              PATCH=$(echo "$CURRENT" | cut -d. -f3)
+
+              # Prüfen ob neue Ordner hinzugefügt wurden
+              HAS_NEW_FOLDER=false
+              if [ -n "$DIFF" ]; then
+                while IFS=$'\t' read -r status filepath; do
+                  if [[ "$status" == A* ]]; then
+                    folder=$(echo "$filepath" | cut -d'/' -f1)
+                    if ! git ls-tree --name-only "$LAST_SHA" | grep -qF "$folder"; then
+                      HAS_NEW_FOLDER=true
+                      break
+                    fi
+                  fi
+                done <<< "$DIFF"
+              fi
+
+              if [ "$HAS_NEW_FOLDER" = true ]; then
+                MINOR=$((MINOR + 1))
+                PATCH=0
+              else
+                PATCH=$((PATCH + 1))
+              fi
+
+              NEW_VERSION="v${MAJOR}.${MINOR}.${PATCH}"
+            fi
+          fi
+
+          TAG_NAME="${NEW_VERSION}-rpgxp-scripts"
+
+          if [ -z "$DIFF" ]; then
+            echo "Keine Script-Änderungen erkannt. Release wird übersprungen."
+            exit 0
+          fi
+
+          total_files=$(echo "$DIFF" | grep -c . || echo "0")
+
+          # ── Kategorien vorbereiten
+          scripts_added=()
+          scripts_removed=()
+          scripts_modified=()
+
+          while IFS=$'\t' read -r status filepath; do
+            [ -z "$status" ] && continue
+            folder=$(echo "$filepath" | cut -d'/' -f1)
+            name=$(basename "$filepath")
+            display="${name%.rb} ($folder)"
+
+            case "$status" in
+              A*) scripts_added+=("$display") ;;
+              D*) scripts_removed+=("$display") ;;
+              *)  scripts_modified+=("$display") ;;
+            esac
+          done <<< "$DIFF"
+
+          count_added=${#scripts_added[@]}
+          count_removed=${#scripts_removed[@]}
+          count_modified=${#scripts_modified[@]}
+
+          # ── Release Notes zusammenbauen
+          BODY=""
+          RELEASE_DATE=$(date -u +"%d-%m-%Y")
+          RELEASE_TIME=$(date -u +"%I:%M %p UTC")
+          BODY+="**Released: $RELEASE_DATE at $RELEASE_TIME**"$'\n\n'
+
+          if [ "$IS_FIRST_RELEASE" = true ]; then
+            BODY+="Initial release containing $total_files RPG Maker XP scripts across all script collections."$'\n\n'
+
+            BODY+="**Included Scripts ($total_files)**"$'\n\n'
+            for s in "${scripts_added[@]}"; do
+              BODY+="• ⠀**${s}** added"$'\n'
+            done
+            BODY+=$'\n'
+          else
+            parts=()
+            [ $count_added -gt 0 ] && parts+=("$count_added added")
+            [ $count_modified -gt 0 ] && parts+=("$count_modified modified")
+            [ $count_removed -gt 0 ] && parts+=("$count_removed removed")
+            summary=$(IFS=", "; echo "${parts[*]}")
+            BODY+="Update with $summary script(s)."$'\n\n'
+
+            if [ $count_added -gt 0 ]; then
+              BODY+="**Added ($count_added)**"$'\n\n'
+              for s in "${scripts_added[@]}"; do
+                BODY+="• ⠀**${s}** added"$'\n'
+              done
+              BODY+=$'\n'
+            fi
+
+            if [ $count_modified -gt 0 ]; then
+              BODY+="**Modified ($count_modified)**"$'\n\n'
+              for s in "${scripts_modified[@]}"; do
+                BODY+="• ⠀**${s}** updated"$'\n'
+              done
+              BODY+=$'\n'
+            fi
+
+            if [ $count_removed -gt 0 ]; then
+              BODY+="**Removed ($count_removed)**"$'\n\n'
+              for s in "${scripts_removed[@]}"; do
+                BODY+="• ⠀~~${s}~~ removed"$'\n'
+              done
+              BODY+=$'\n'
+            fi
+          fi
+
+          # ── ZIP-Asset erstellen
+          echo "Creating release archive..."
+
+          if [ "$IS_FIRST_RELEASE" = true ]; then
+            find . -name "*.rb" -not -path "./.git/*" | zip -@ -q /tmp/rpgxp-scripts.zip
+          else
+            FILE_LIST=""
+            while IFS=$'\t' read -r status filepath; do
+              [ -z "$status" ] && continue
+              [[ "$status" == D* ]] && continue
+              [ -f "$filepath" ] && FILE_LIST+="$filepath"$'\n'
+            done <<< "$DIFF"
+
+            if [ -z "$FILE_LIST" ]; then
+              echo "No files to include in the release asset."
+              exit 0
+            fi
+
+            echo -n "$FILE_LIST" | zip -@ -q /tmp/rpgxp-scripts.zip
+          fi
+
+          DATA_SIZE=$(du -h /tmp/rpgxp-scripts.zip | cut -f1)
+          echo "  Archive size: $DATA_SIZE"
+
+          # ── Release erstellen
+          echo "$BODY" > /tmp/release_notes.md
+          echo "Release Notes:"
+          cat /tmp/release_notes.md
+
+          echo "Creating release: $TAG_NAME"
+          gh release create "$TAG_NAME" \
+            /tmp/rpgxp-scripts.zip \
+            --title "RPG Maker XP Script Library $NEW_VERSION" \
+            --notes-file /tmp/release_notes.md \
+            --latest
+
+          echo "Release '$TAG_NAME' successfully created!"
