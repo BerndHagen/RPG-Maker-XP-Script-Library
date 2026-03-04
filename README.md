@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="img/img-rpgxp.png" alt="RPG Maker XP Scripts" width="128" />
+  <img src="images/img-rpgxp.png" alt="RPG Maker XP Scripts" width="128" />
 </p>
 
 <h1 align="center">RPG Maker XP - Script Library</h1>
@@ -659,39 +659,39 @@ The following screenshots demonstrate the core functionality of each script, inc
     <th>Script - HUD System</th>
   </tr>
   <tr>
-    <td><a href="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/img/img-rpgxp-player.png" target="_blank" rel="noopener noreferrer"><img src="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/img/img-rpgxp-player.png" alt="BGM Player" width="450"></a></td>
-    <td><a href="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/img/img-rpgxp-hud.png" target="_blank" rel="noopener noreferrer"><img src="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/img/img-rpgxp-hud.png" alt="HUD Display" width="450"></a></td>
+    <td><a href="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/images/img-rpgxp-player.png" target="_blank" rel="noopener noreferrer"><img src="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/images/img-rpgxp-player.png" alt="BGM Player" width="450"></a></td>
+    <td><a href="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/images/img-rpgxp-hud.png" target="_blank" rel="noopener noreferrer"><img src="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/images/img-rpgxp-hud.png" alt="HUD Display" width="450"></a></td>
   </tr>
   <tr>
     <th>Script - Enhanced Menus</th>
     <th>Script - Grid Save System</th>
   </tr>
   <tr>
-    <td><a href="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/img/img-rpgxp-menu.png" target="_blank" rel="noopener noreferrer"><img src="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/img/img-rpgxp-menu.png" alt="Enhanced Menu" width="450"></a></td>
-    <td><a href="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/img/img-rpgxp-save.png" target="_blank" rel="noopener noreferrer"><img src="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/img/img-rpgxp-save.png" alt="Grid Save System" width="450"></a></td>
+    <td><a href="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/images/img-rpgxp-menu.png" target="_blank" rel="noopener noreferrer"><img src="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/images/img-rpgxp-menu.png" alt="Enhanced Menu" width="450"></a></td>
+    <td><a href="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/images/img-rpgxp-save.png" target="_blank" rel="noopener noreferrer"><img src="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/images/img-rpgxp-save.png" alt="Grid Save System" width="450"></a></td>
   </tr>
   <tr>
     <th>Script - Skill Information</th>
     <th>Script - Visual Timer</th>
   </tr>
   <tr>
-    <td><a href="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/img/img-rpgxp-skills.png" target="_blank" rel="noopener noreferrer"><img src="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/img/img-rpgxp-skills.png" alt="Skill Information" width="450"></a></td>
-    <td><a href="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/img/img-rpgxp-timer.png" target="_blank" rel="noopener noreferrer"><img src="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/img/img-rpgxp-timer.png" alt="Visual Timer" width="450"></a></td>
+    <td><a href="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/images/img-rpgxp-skills.png" target="_blank" rel="noopener noreferrer"><img src="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/images/img-rpgxp-skills.png" alt="Skill Information" width="450"></a></td>
+    <td><a href="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/images/img-rpgxp-timer.png" target="_blank" rel="noopener noreferrer"><img src="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/images/img-rpgxp-timer.png" alt="Visual Timer" width="450"></a></td>
   </tr>
   <tr>
     <th>Script - Player Jump System</th>
     <th>Script - Bestiary System</th>
   </tr>
   <tr>
-    <td><a href="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/img/img-rpgxp-jump.png" target="_blank" rel="noopener noreferrer"><img src="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/img/img-rpgxp-jump.png" alt="Player Jump System" width="450"></a></td>
-    <td><a href="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/img/img-rpgxp-bestiary.png" target="_blank" rel="noopener noreferrer"><img src="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/img/img-rpgxp-bestiary.png" alt="Bestiary System" width="450"></a></td>
+    <td><a href="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/images/img-rpgxp-jump.png" target="_blank" rel="noopener noreferrer"><img src="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/images/img-rpgxp-jump.png" alt="Player Jump System" width="450"></a></td>
+    <td><a href="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/images/img-rpgxp-bestiary.png" target="_blank" rel="noopener noreferrer"><img src="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/images/img-rpgxp-bestiary.png" alt="Bestiary System" width="450"></a></td>
   </tr>
   <tr>
     <th>Script - Typewriter Message System</th>
     <th>Script - Item Popup System</th>
   </tr>
   <tr>
-    <td><a href="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/img/img-rpgxp-message.png" target="_blank" rel="noopener noreferrer"><img src="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/img/img-rpgxp-message.png" alt="Typewriter Message System" width="450"></a></td>
-    <td><a href="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/img/img-rpgxp-popup.png" target="_blank" rel="noopener noreferrer"><img src="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/img/img-rpgxp-popup.png" alt="Item Popup System" width="450"></a></td>
+    <td><a href="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/images/img-rpgxp-message.png" target="_blank" rel="noopener noreferrer"><img src="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/images/img-rpgxp-message.png" alt="Typewriter Message System" width="450"></a></td>
+    <td><a href="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/images/img-rpgxp-popup.png" target="_blank" rel="noopener noreferrer"><img src="https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/raw/main/images/img-rpgxp-popup.png" alt="Item Popup System" width="450"></a></td>
   </tr>
 </table>

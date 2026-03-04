@@ -3,8 +3,6 @@ name: RPG Maker XP Release
 on:
   push:
     branches: [main]
-    paths:
-      - '**/*.rb'
   workflow_dispatch:
 
 permissions:
@@ -25,7 +23,7 @@ jobs:
         run: |
           set -euo pipefail
 
-          IGNORED_PATHS="README.md|LICENSE|img/|\.github/|\.gitattributes|\.gitignore"
+          IGNORED_PATHS="README.md|LICENSE|images/|\.github/|\.gitattributes|\.gitignore"
 
           # ── Letzten Release-Tag ermitteln
           LATEST_TAG=$(git tag -l 'v*-rpgxp-scripts' --sort=-v:refname | head -n1 || true)
