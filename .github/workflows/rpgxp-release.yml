@@ -26,7 +26,7 @@ jobs:
           IGNORED_PATHS="README.md|LICENSE|images/|\.github/|\.gitattributes|\.gitignore"
 
           # ── Letzten Release-Tag ermitteln
-          LATEST_TAG=$(git tag -l 'v*-rpgxp-scripts' --sort=-v:refname | head -n1 || true)
+          LATEST_TAG=$(git tag -l 'v*-scripts' --sort=-v:refname | head -n1 || true)
 
           if [ -z "$LATEST_TAG" ]; then
             IS_FIRST_RELEASE=true
@@ -45,7 +45,7 @@ jobs:
             fi
 
             if [ "$IS_FIRST_RELEASE" = false ]; then
-              CURRENT=$(echo "$LATEST_TAG" | sed 's/^v//' | sed 's/-rpgxp-scripts$//')
+              CURRENT=$(echo "$LATEST_TAG" | sed 's/^v//' | sed 's/-scripts$//')
               MAJOR=$(echo "$CURRENT" | cut -d. -f1)
               MINOR=$(echo "$CURRENT" | cut -d. -f2)
               PATCH=$(echo "$CURRENT" | cut -d. -f3)
@@ -74,7 +74,7 @@ jobs:
             fi
           fi
 
-          TAG_NAME="${NEW_VERSION}-rpgxp-scripts"
+          TAG_NAME="${NEW_VERSION}-scripts"
 
           if [ -z "$DIFF" ]; then
             echo "No script changes detected. Skipping release."
