@@ -171,7 +171,7 @@ jobs:
             done
           fi
 
-          BODY+=$'\n'"**Note:** If you encounter any bugs or issues, please don't hesitate to open an issue. For any questions or to start a discussion, feel free to initiate a discussion on the GitHub repository."
+          BODY+=$'\n'"**Note:** If you encounter any bugs or issues, please don't hesitate to open an [issue](https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/issues). For any questions or to start a discussion, feel free to initiate a [discussion](https://github.com/BerndHagen/RPG-Maker-XP-Script-Library/discussions) on the GitHub repository."
 
           # ── Release-Assets sammeln (einzelne .rb Dateien)
           ASSET_FILES=()
