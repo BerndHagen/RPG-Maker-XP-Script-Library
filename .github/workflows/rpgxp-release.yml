@@ -45,13 +45,11 @@ jobs:
             fi
 
             if [ "$IS_FIRST_RELEASE" = false ]; then
-              # Version aus dem letzten Tag parsen
               CURRENT=$(echo "$LATEST_TAG" | sed 's/^v//' | sed 's/-rpgxp-scripts$//')
               MAJOR=$(echo "$CURRENT" | cut -d. -f1)
               MINOR=$(echo "$CURRENT" | cut -d. -f2)
               PATCH=$(echo "$CURRENT" | cut -d. -f3)
 
-              # Prüfen ob neue Ordner hinzugefügt wurden
               HAS_NEW_FOLDER=false
               if [ -n "$DIFF" ]; then
                 while IFS=$'\t' read -r status filepath; do
@@ -79,7 +77,7 @@ jobs:
           TAG_NAME="${NEW_VERSION}-rpgxp-scripts"
 
           if [ -z "$DIFF" ]; then
-            echo "Keine Script-Änderungen erkannt. Release wird übersprungen."
+            echo "No script changes detected. Skipping release."
             exit 0
           fi
 
@@ -93,13 +91,12 @@ jobs:
           while IFS=$'\t' read -r status filepath; do
             [ -z "$status" ] && continue
             folder=$(echo "$filepath" | cut -d'/' -f1)
-            name=$(basename "$filepath")
-            display="${name%.rb} ($folder)"
+            readable=$(echo "$folder" | sed 's/^[0-9]*-//' | sed 's/-/ /g')
 
             case "$status" in
-              A*) scripts_added+=("$display") ;;
-              D*) scripts_removed+=("$display") ;;
-              *)  scripts_modified+=("$display") ;;
+              A*) scripts_added+=("$readable") ;;
+              D*) scripts_removed+=("$readable") ;;
+              *)  scripts_modified+=("$readable") ;;
             esac
           done <<< "$DIFF"
 
@@ -111,83 +108,71 @@ jobs:
           BODY=""
           RELEASE_DATE=$(date -u +"%d-%m-%Y")
           RELEASE_TIME=$(date -u +"%I:%M %p UTC")
-          BODY+="**Released: $RELEASE_DATE at $RELEASE_TIME**"$'\n\n'
+          BODY+="**Release: $RELEASE_DATE at $RELEASE_TIME**"$'\n\n'
 
           if [ "$IS_FIRST_RELEASE" = true ]; then
-            BODY+="Initial release containing $total_files RPG Maker XP scripts across all script collections."$'\n\n'
+            BODY+="This release contains $total_files RPG Maker XP scripts designed to improve gameplay mechanics and visual presentation. Each script is a drop-in replacement that maintains full compatibility with the standard RPG Maker XP framework while adding new functionality."$'\n\n'
 
-            BODY+="**Included Scripts ($total_files)**"$'\n\n'
             for s in "${scripts_added[@]}"; do
-              BODY+="• ⠀**${s}** added"$'\n'
+              BODY+="• ⠀Added ${s}"$'\n'
             done
-            BODY+=$'\n'
           else
             parts=()
             [ $count_added -gt 0 ] && parts+=("$count_added added")
-            [ $count_modified -gt 0 ] && parts+=("$count_modified modified")
+            [ $count_modified -gt 0 ] && parts+=("$count_modified updated")
             [ $count_removed -gt 0 ] && parts+=("$count_removed removed")
             summary=$(IFS=", "; echo "${parts[*]}")
-            BODY+="Update with $summary script(s)."$'\n\n'
+            BODY+="This release includes ${summary} script(s)."$'\n\n'
 
             if [ $count_added -gt 0 ]; then
-              BODY+="**Added ($count_added)**"$'\n\n'
               for s in "${scripts_added[@]}"; do
-                BODY+="• ⠀**${s}** added"$'\n'
+                BODY+="• ⠀Added ${s}"$'\n'
               done
-              BODY+=$'\n'
             fi
 
             if [ $count_modified -gt 0 ]; then
-              BODY+="**Modified ($count_modified)**"$'\n\n'
               for s in "${scripts_modified[@]}"; do
-                BODY+="• ⠀**${s}** updated"$'\n'
+                BODY+="• ⠀Enhanced ${s}"$'\n'
               done
-              BODY+=$'\n'
             fi
 
             if [ $count_removed -gt 0 ]; then
-              BODY+="**Removed ($count_removed)**"$'\n\n'
               for s in "${scripts_removed[@]}"; do
-                BODY+="• ⠀~~${s}~~ removed"$'\n'
+                BODY+="• ⠀Removed ~~${s}~~"$'\n'
               done
-              BODY+=$'\n'
             fi
           fi
 
-          # ── ZIP-Asset erstellen
-          echo "Creating release archive..."
+          BODY+=$'\n'"**Note:** If you encounter any bugs or issues, please don't hesitate to open an issue. For any questions or to start a discussion, feel free to initiate a discussion on the GitHub repository."
 
-          if [ "$IS_FIRST_RELEASE" = true ]; then
-            find . -name "*.rb" -not -path "./.git/*" | zip -@ -q /tmp/rpgxp-scripts.zip
-          else
-            FILE_LIST=""
-            while IFS=$'\t' read -r status filepath; do
-              [ -z "$status" ] && continue
-              [[ "$status" == D* ]] && continue
-              [ -f "$filepath" ] && FILE_LIST+="$filepath"$'\n'
-            done <<< "$DIFF"
+          # ── Release-Assets sammeln (einzelne .rb Dateien)
+          ASSET_FILES=()
+          while IFS=$'\t' read -r status filepath; do
+            [ -z "$status" ] && continue
+            [[ "$status" == D* ]] && continue
+            [ -f "$filepath" ] && ASSET_FILES+=("$filepath")
+          done <<< "$DIFF"
 
-            if [ -z "$FILE_LIST" ]; then
-              echo "No files to include in the release asset."
-              exit 0
-            fi
-
-            echo -n "$FILE_LIST" | zip -@ -q /tmp/rpgxp-scripts.zip
+          if [ ${#ASSET_FILES[@]} -eq 0 ]; then
+            echo "No files to include in the release."
+            exit 0
           fi
 
-          DATA_SIZE=$(du -h /tmp/rpgxp-scripts.zip | cut -f1)
-          echo "  Archive size: $DATA_SIZE"
+          echo "Assets to upload (${#ASSET_FILES[@]}):"
+          printf "  %s\n" "${ASSET_FILES[@]}"
 
           # ── Release erstellen
           echo "$BODY" > /tmp/release_notes.md
+          echo ""
           echo "Release Notes:"
           cat /tmp/release_notes.md
+          echo ""
 
           echo "Creating release: $TAG_NAME"
           gh release create "$TAG_NAME" \
-            /tmp/rpgxp-scripts.zip \
+            "${ASSET_FILES[@]}" \
             --title "RPG Maker XP Script Library $NEW_VERSION" \
             --notes-file /tmp/release_notes.md \
             --latest
 
-          echo "Release '$TAG_NAME' successfully created!"
+          echo "Release '$TAG_NAME' created successfully!"
