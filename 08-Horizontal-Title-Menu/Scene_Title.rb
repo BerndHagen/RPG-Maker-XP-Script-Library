@@ -29,11 +29,18 @@ class Scene_Title
     $game_system = Game_System.new
     @sprite = Sprite.new
     @sprite.bitmap = RPG::Cache.title($data_system.title_name)
-    @menu_labels = ["New Game", "Continue", "Shutdown"]
+    @menu_labels = ["New Game", "Continue"]
+    @bgm_player_available = defined?(Scene_Audio_BGM)
+    if @bgm_player_available
+      @menu_labels.push("Player")
+    end
+    @menu_labels.push("Shutdown")
     @menu_windows = []
-    menu_w = 160
-    menu_h = 56
     menu_margin = 24
+    screen_padding = 20
+    max_total = 640 - screen_padding * 2
+    menu_w = [(max_total - (@menu_labels.size - 1) * menu_margin) / @menu_labels.size, 160].min
+    menu_h = 56
     total_w = @menu_labels.size * menu_w + (@menu_labels.size - 1) * menu_margin
     start_x = 320 - total_w / 2
     y = 380
@@ -92,12 +99,14 @@ class Scene_Title
     end
 
     if Input.trigger?(Input::C)
-      case @menu_index
-      when 0
+      case @menu_labels[@menu_index]
+      when "New Game"
         command_new_game
-      when 1
+      when "Continue"
         command_continue
-      when 2
+      when "Player"
+        command_bgm_player
+      when "Shutdown"
         command_shutdown
       end
     end
@@ -160,6 +169,13 @@ class Scene_Title
     Audio.bgs_fade(800)
     Audio.me_fade(800)
     $scene = nil
+  end
+  #--------------------------------------------------------------------------
+  # * Command: BGM Player
+  #--------------------------------------------------------------------------
+  def command_bgm_player
+    $game_system.se_play($data_system.decision_se)
+    $scene = Scene_Audio_BGM.new
   end
   #--------------------------------------------------------------------------
   # * Battle Test

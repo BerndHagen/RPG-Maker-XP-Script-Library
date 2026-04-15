@@ -109,26 +109,91 @@ Each script maintains full compatibility with the standard RPG Maker XP framewor
 ### **Quick Setup**
 1. Open your RPG Maker XP project
 2. Press F11 to access the Script Editor
-3. Find the script you want to enhance (e.g., "Game_Player" for jump system)
-4. Replace the existing script content with the enhanced version
-5. Save your project (Ctrl+S) and test the new functionality
+3. Check whether the script is a **replacement** or a **new addition** (see tables below)
+4. For replacements, find the matching default script and replace its content
+5. For new additions, insert a new script entry above `Main` and paste the content
+6. Save your project (Ctrl+S) and test the new functionality
 
 ### **Adding Scripts to Your Project**
 
-1. **Open Script Editor**
+Scripts in this library fall into two categories: **replacements** for existing default scripts and **new additions** that don't exist in the default editor.
+
+#### **Replacement Scripts**
+
+These scripts enhance existing default RPG Maker XP scripts. Find the matching script by name in the Script Editor (left panel), select all its content (Ctrl+A), delete it, and paste the enhanced version.
+
+| Script | Replaces Default | Folder |
+|--------|------------------|--------|
+| `Game_Player.rb` | Game_Player | `01-Player-Jump-System` |
+| `Window_Message.rb` | Window_Message | `04-Typewriter-Message-System` |
+| `Window_Gold.rb` | Window_Gold | `05-Enhanced-Menu-Windows` |
+| `Window_Steps.rb` | Window_Steps | `05-Enhanced-Menu-Windows` |
+| `Window_PlayTime.rb` | Window_PlayTime | `05-Enhanced-Menu-Windows` |
+| `Sprite_Timer.rb` | Sprite_Timer | `06-Visual-Timer-System` |
+| `Scene_Save.rb` | Scene_Save | `07-Grid-Save-System` |
+| `Scene_Title.rb` | Scene_Title | `08-Horizontal-Title-Menu` |
+| `Scene_Menu.rb` | Scene_Menu | `09-Transparent-Menu-System` |
+| `Scene_Skill.rb` | Scene_Skill | `09-Transparent-Menu-System` |
+| `Scene_Status.rb` | Scene_Status | `09-Transparent-Menu-System` |
+| `Scene_Item.rb` | Scene_Item | `09-Transparent-Menu-System` |
+| `Scene_Equip.rb` | Scene_Equip | `09-Transparent-Menu-System` |
+
+#### **New Addition Scripts**
+
+These scripts add entirely new functionality. In the Script Editor, right-click an entry above `Main` and select **Insert**. Name the new entry to match the script, then paste the content.
+
+| Script | New Entry Name | Folder |
+|--------|---------------|--------|
+| `Window_PlayerHUD.rb` | Window_PlayerHUD | `02-Player-HUD-System` |
+| `Window_BGMList.rb` | Window_BGMList | `03-BGM-Player-Menu` |
+| `Scene_Bestiary.rb` | Scene_Bestiary | `10-Bestiary-System` |
+| `Window_ItemPopup.rb` | Window_ItemPopup | `11-Item-Popup-System` |
+
+#### **Step-by-Step: Replacing an Existing Script**
+
+1. **Open the Script File**
+   - Open the `.rb` file from this repository in a text editor (Notepad, Notepad++, VS Code, etc.)
+   - Select all content (Ctrl+A) and copy it (Ctrl+C)
+
+2. **Open Script Editor**
    - Launch RPG Maker XP and open your project
    - Press F11 to open the Script Editor
 
-2. **Locate Target Script**
-   - Find the script you want to enhance in the script list (left panel)
+3. **Locate Target Script**
+   - Find the matching default script in the script list (left panel)
    - Click to select it (e.g., "Game_Player" for jump system)
 
-3. **Replace Script Content**
-   - Select all existing content (Ctrl+A)
+4. **Replace Script Content**
+   - Select all existing content in the code area (Ctrl+A)
    - Delete the selected content
-   - Copy and paste the enhanced script from this repository
+   - Paste the copied content (Ctrl+V)
 
-4. **Save Changes**
+5. **Save Changes**
+   - Press Ctrl+S to save your changes
+   - Close the Script Editor
+   - Test your game to verify functionality
+
+#### **Step-by-Step: Adding a New Script**
+
+1. **Open the Script File**
+   - Open the `.rb` file from this repository in a text editor (Notepad, Notepad++, VS Code, etc.)
+   - Select all content (Ctrl+A) and copy it (Ctrl+C)
+   - **Note:** Do not drag `.rb` files into RPG Maker XP directly - the Script Editor does not support file imports
+
+2. **Open Script Editor**
+   - Launch RPG Maker XP and open your project
+   - Press F11 to open the Script Editor
+
+3. **Insert New Entry**
+   - In the script list (left panel), scroll down to **Main**
+   - Right-click any entry above `Main` and select **Insert**
+   - Name the new entry to match the script (e.g., "Window_PlayerHUD")
+
+4. **Paste Script Content**
+   - Click into the empty code area on the right side
+   - Paste the copied content (Ctrl+V)
+
+5. **Save Changes**
    - Press Ctrl+S to save your changes
    - Close the Script Editor
    - Test your game to verify functionality
@@ -263,10 +328,23 @@ bgm.pitch = [bgm.pitch + 5, 150].min    # ±5% increments
 ```
 
 ### Title Screen Integration
+The BGM Player integrates automatically with the **Horizontal Title Menu** (Script 08). When both scripts are installed, the title screen will display a "Player" option between "Continue" and "Shutdown". No additional configuration is required.
+
+If you are using the **default RPG Maker XP title screen** instead of the Horizontal Title Menu, you will need to manually add a menu option. In the default `Scene_Title` script, add a new command to the `Window_Command` and handle it:
 ```ruby
-# In Scene_Title update method
-when 2  # BGM Player option
+# In Scene_Title, add "BGM Player" to the command list
+s1 = "New Game"
+s2 = "Continue"
+s3 = "BGM Player"
+s4 = "Shutdown"
+@command_window = Window_Command.new(192, [s1, s2, s3, s4])
+
+# In the update_command method, handle the new option
+when 2  # BGM Player
+  $game_system.se_play($data_system.decision_se)
   $scene = Scene_Audio_BGM.new
+when 3  # Shutdown (shifted from 2 to 3)
+  command_shutdown
 ```
 
 ## Typewriter Message System
@@ -430,10 +508,17 @@ Redesigned title screen with side-by-side menu options displayed in individual w
 - **Horizontal Layout:** Side-by-side arrangement instead of vertical list
 - **Visual Highlighting:** Selected option changes color dynamically
 - **Centered Design:** Automatically centers menu based on number of options
+- **BGM Player Detection:** Automatically adds "Player" option when BGM Player Menu (Script 03) is installed
 
 ### Key Implementation
 ```ruby
-@menu_labels = ["New Game", "Continue", "Shutdown"]
+# Menu labels are built dynamically
+@menu_labels = ["New Game", "Continue"]
+if defined?(Scene_Audio_BGM)       # Auto-detect BGM Player
+  @menu_labels.push("Player")
+end
+@menu_labels.push("Shutdown")
+
 menu_w = 160
 menu_h = 56
 menu_margin = 24
@@ -455,9 +540,6 @@ menu_w = 160          # Width of each menu window
 menu_h = 56           # Height of each menu window
 menu_margin = 24      # Space between windows
 y = 380               # Vertical position
-
-# Add new menu options
-@menu_labels = ["New Game", "Continue", "BGM Player", "Shutdown"]
 ```
 
 ## Transparent Menu System
